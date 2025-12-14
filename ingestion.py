@@ -94,7 +94,7 @@ async def main():
         input={
             "url": "https://python.langchain.com/",
             "extract_depth": "advanced",
-            "instructions": "Documentation relevant to langchain",
+            "instructions": "Documentation relevant to ai agents",
             "max_depth": 5,
         }
     )
