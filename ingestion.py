@@ -22,19 +22,19 @@ ssl_context = ssl.create_default_context(cafile=certifi.where())
 os.environ["SSL_CERT_FILE"] = certifi.where()
 os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
 
+
 embeddings = OpenAIEmbeddings(
     model="text-embedding-3-small",
     show_progress_bar=False,
     chunk_size=50,
     retry_min_seconds=10,
 )
-
+chroma = Chroma(persist_directory="chroma_db", embedding_function=embeddings)
 vectorstore = PineconeVectorStore(
     index_name="langchain-docs-2025", embedding=embeddings
 )
 tavily_crawl = TavilyCrawl()
-tavily_extract = TavilyExtract()
-tavily_map = TavilyMap(max_depth=5, max_breadth=20, max_pages=1000)
+
 
 async def index_documents_async(documents: List[Document], batch_size: int = 50):
     """Process documents in batches asynchronously."""
@@ -81,6 +81,7 @@ async def index_documents_async(documents: List[Document], batch_size: int = 50)
             f"VectorStore Indexing: Processed {successful}/{len(batches)} batches successfully"
         )
 
+
 async def main():
     """Main async function to orchestrate the entire process."""
     log_header("DOCUMENTATION INGESTION PIPELINE")
@@ -92,13 +93,12 @@ async def main():
 
     tavily_crawl_results = tavily_crawl.invoke(
         input={
-            "url": "https://python.langchain.com/",
+            "url": "https://docs.langchain.com/",
             "extract_depth": "advanced",
-            "instructions": "Documentation relevant to ai agents",
+            "instructions": "langchain",
             "max_depth": 5,
         }
     )
-
     if tavily_crawl_results.get("error"):
         log_error(f"TavilyCrawl: {tavily_crawl_results['error']}")
         return
@@ -140,6 +140,7 @@ async def main():
     log_info(f"   • Pages crawled: {len(tavily_crawl_results)}")
     log_info(f"   • Documents extracted: {len(all_docs)}")
     log_info(f"   • Chunks created: {len(splitted_docs)}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

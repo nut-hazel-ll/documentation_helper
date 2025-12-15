@@ -13,7 +13,6 @@ nltk = "*"
 fastapi = "*"
 jinja2 = "*"
 uvicorn = "*"
-streamlit = "*"
 streamlit-chat = "*"
 tqdm = "*"
 isort = "*"
@@ -28,6 +27,7 @@ certifi = "*"
 langchain-chroma = "*"
 python-dotenv = "*"
 langchain = "*"
+streamlit = "*"
 
 [dev-packages]
 
