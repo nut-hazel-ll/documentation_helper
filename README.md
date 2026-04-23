@@ -80,8 +80,8 @@ Streamlit chat UI
    - connects to Pinecone using the `python-tutorial` index
    - creates a `ChatOpenAI` model with temperature=0
    - pulls LangChain Hub prompts for:
-   - retrieval QA
-   - question rephrasing
+      - retrieval QA
+      - question rephrasing
    - builds a **history-aware** retriever
    - builds a retrieval chain
    - invokes the chain with the current user input and chat history
