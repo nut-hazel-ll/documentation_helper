@@ -40,3 +40,21 @@ History-aware retriever
 Retrieval QA chain
    ↓
 Streamlit chat UI
+```
+
+## Repository Structure
+
+```text
+.
+├── main.py              # Streamlit UI
+├── ingestion.py         # Crawl, chunk, embed, and index documentation
+├── consts.py            # Shared constants (index name)
+├── logger.py            # Colored console logging helpers
+├── backend/
+│   └── core.py          # RAG pipeline and LLM call
+├── chroma_db/           # Local Chroma artifacts currently present in repo
+├── Pipfile              # Python dependencies
+└── Pipfile.lock
+```
+
+
