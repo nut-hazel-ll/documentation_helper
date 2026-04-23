@@ -31,7 +31,7 @@ embeddings = OpenAIEmbeddings(
 )
 chroma = Chroma(persist_directory="chroma_db", embedding_function=embeddings)
 vectorstore = PineconeVectorStore(
-    index_name="langchain-docs-2025", embedding=embeddings
+    index_name="python-tutorial", embedding=embeddings
 )
 tavily_crawl = TavilyCrawl()
 
@@ -87,18 +87,20 @@ async def main():
     log_header("DOCUMENTATION INGESTION PIPELINE")
 
     log_info(
-        "🔍 TavilyCrawl: Starting to crawl documentation from https://python.langchain.com/",
+        "🔍 TavilyCrawl: Starting to crawl documentation from https://docs.python.org/3/tutorial/index.html",
         Colors.PURPLE,
     )
 
     tavily_crawl_results = tavily_crawl.invoke(
         input={
-            "url": "https://docs.langchain.com/",
+            "url": "https://docs.python.org/3/tutorial/index.html",
             "extract_depth": "advanced",
-            "instructions": "langchain",
+            "instructions": "python",
             "max_depth": 5,
         }
     )
+
+
     if tavily_crawl_results.get("error"):
         log_error(f"TavilyCrawl: {tavily_crawl_results['error']}")
         return
@@ -112,10 +114,14 @@ async def main():
         log_info(
             f"TavilyCrawl: Successfully crawled {tavily_crawl_result_item['url']} from documentation site"
         )
+        # Document requires page_content to be a non-None string; metadata values must be serializable
+        raw_content = tavily_crawl_result_item.get("raw_content")
+        page_content = raw_content if isinstance(raw_content, str) else ""
+        source = str(tavily_crawl_result_item.get("url") or "")
         all_docs.append(
             Document(
-                page_content=tavily_crawl_result_item["raw_content"],
-                metadata={"source": tavily_crawl_result_item["url"]},
+                page_content=page_content,
+                metadata={"source": str(source)},
             )
         )
 

@@ -13,7 +13,7 @@ from langchain_pinecone import PineconeVectorStore
 
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-INDEX_NAME = "langchain-docs-2025"
+INDEX_NAME = "python-tutorial"
 
 
 def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
@@ -45,6 +45,6 @@ def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
 
 
 if __name__ == "__main__":
-    res = run_llm(query="What is a LangChain?")
-    #res = run_llm(query="What is a Shibainu?")
+    #res = run_llm(query="What is a class in Python?")
+    res = run_llm(query="What is a Shibainu?")
     print(res["answer"])
