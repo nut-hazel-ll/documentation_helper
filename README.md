@@ -232,97 +232,95 @@ http://localhost:8501
 
 ## Design Decisions
 
-- **Use RAG instead of pure LLM**
+### Use RAG instead of pure LLM
+
+Decision: Retrieve documentation instead of relying on model memory
+
+👉 Why:
+   - Reduces hallucination
+   - Keeps answers grounded in real docs
+   - Works better for factual domains like documentation
 
 
-  Decision: Retrieve documentation instead of relying on model memory
+### Build a custom ingestion pipeline
 
-   👉 Why:
+Decision: Crawl + chunk + embed docs yourself
 
-     - Reduces hallucination
-     - Keeps answers grounded in real docs
-     - Works better for factual domains like documentation
-
-
-- **Build a custom ingestion pipeline**
-
-   Decision: Crawl + chunk + embed docs yourself
-
-   👉 Why:
-     - Control over data quality
-     - Can update or extend knowledge base
-     - Avoids dependency on static datasets
+👉 Why:
+   - Control over data quality
+   - Can update or extend knowledge base
+   - Avoids dependency on static datasets
 
 
-- **Use vector database (Pinecone)**
+### Use vector database (Pinecone)
 
-   Decision: Store embeddings in Pinecone instead of local search
+Decision: Store embeddings in Pinecone instead of local search
 
-   👉 Why:
-     - Fast semantic retrieval
-     - Scalable
-     - Production-ready vs simple local solutions
-
-
-- **Use chunking strategy**
-
-   Decision: Split documents into smaller chunks
-
-   👉 Why:
-     - Improves retrieval accuracy
-     - Fits within LLM context window
-     - Avoids irrelevant long passages
+👉 Why:
+   - Fast semantic retrieval
+   - Scalable
+   - Production-ready vs simple local solutions
 
 
-- **Use history-aware retriever**
+### Use chunking strategy
 
-   Decision: Rewrite queries using chat history
+Decision: Split documents into smaller chunks
 
-   👉 Why:
-     - Handles follow-up questions
-     - Makes the system conversational
-     - Improves retrieval relevance
-
-
-- **Separate ingestion and query pipelines**
-
-   Decision: Two-stage architecture
-     - Offline: ingestion → embedding → storage  
-     - Online: query → retrieval → generation  
-
-   👉 Why:
-     - Efficient (no recompute at runtime)
-     - Scalable
-     - Cleaner system design
+👉 Why:
+   - Improves retrieval accuracy
+   - Fits within LLM context window
+   - Avoids irrelevant long passages
 
 
-- **Use Streamlit for UI**
+### Use history-aware retriever
 
-   Decision: Lightweight chat interface
+Decision: Rewrite queries using chat history
 
-   👉 Why:
-     - Fast prototyping
-     - Easy to demonstrate
-     - Good for showcasing projects
-
-
-- **Return sources with answers**
-
-   Decision: Show retrieved document URLs
-
-   👉 Why:
-     - Improves trust
-     - Enables verification
+👉 Why:
+   - Handles follow-up questions
+   - Makes the system conversational
+   - Improves retrieval relevance
 
 
-- **Modular architecture**
+### Separate ingestion and query pipelines
 
-   Decision: Split into:
-     - UI (main.py)
-     - backend (core.py)
-     - ingestion (ingestion.py)
+Decision: Two-stage architecture
+   - Offline: ingestion → embedding → storage  
+   - Online: query → retrieval → generation  
 
-   👉 Why:
-     - Easier to maintain
-     - Easier to extend
-     - Cleaner separation of concerns
+👉 Why:
+   - Efficient (no recompute at runtime)
+   - Scalable
+   - Cleaner system design
+
+
+### Use Streamlit for UI
+
+Decision: Lightweight chat interface
+
+👉 Why:
+   - Fast prototyping
+   - Easy to demonstrate
+   - Good for showcasing projects
+
+
+### Return sources with answers
+
+Decision: Show retrieved document URLs
+
+👉 Why:
+   - Improves trust
+   - Enables verification
+
+
+### Modular architecture
+
+Decision: Split into:
+   - UI (main.py)
+   - backend (core.py)
+   - ingestion (ingestion.py)
+
+👉 Why:
+   - Easier to maintain
+   - Easier to extend
+   - Cleaner separation of concerns
